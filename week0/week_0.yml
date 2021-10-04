@@ -1,0 +1,29 @@
+Description: Create simple EC2 instance
+
+Parameters:
+  TagKey:
+    Description: EC2 Tag key
+    Type: String
+    Default: Name
+  TagValue:
+    Description: EC2 Tag value
+    Type: String
+    Default: Week_0_assignment
+  KeyName:
+    Description: KeyValye pair name
+    Type: String
+    Default: aws_key_pair
+
+Resources:
+  Week0Ec2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName:
+        Ref: KeyName
+      ImageId: ami-0c2d06d50ce30b442
+      InstanceType: t2.micro
+
+Outputs:
+  PublicIp:
+    Description: Ip address of created EC2
+    Value: !GetAtt Week0Ec2Instance.PublicIp
