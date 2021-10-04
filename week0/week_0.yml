@@ -22,6 +22,9 @@ Resources:
         Ref: KeyName
       ImageId: ami-0c2d06d50ce30b442
       InstanceType: t2.micro
+      Tags:
+        - Key: !Ref TagKey
+          Value: !Ref TagValue
 
 Outputs:
   PublicIp:
