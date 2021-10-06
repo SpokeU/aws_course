@@ -1,0 +1,1 @@
+aws cloudformation create-stack --stack-name week0stack --template-body file://./week_0.yml --parameters ParameterKey=TagKey,ParameterValue=Name ParameterKey=TagValue,ParameterValue=Week0
