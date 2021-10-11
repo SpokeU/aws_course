@@ -1,0 +1,71 @@
+Description: Create simple EC2 instance
+
+Parameters:
+  TagKey:
+    Description: EC2 Tag key
+    Type: String
+    Default: Name
+  TagValue:
+    Description: EC2 Tag value
+    Type: String
+    Default: Week_1_assignment
+  KeyName:
+    Description: KeyValye pair name
+    Type: String
+    Default: aws_key_pair
+
+Resources:
+  SSHSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: SSH Security group
+      GroupDescription: Enable Ping and SSH access via port 22
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          FromPort: 22
+          IpProtocol: tcp
+          ToPort: 22
+
+  HTTPSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: HTTP Security group
+      GroupDescription: Enable HTTP access
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+
+  MyLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: MyLaunchTemplate
+      LaunchTemplateData:
+        ImageId: ami-0c2d06d50ce30b442
+        InstanceType: t2.micro
+        KeyName:
+          Ref: KeyName
+        SecurityGroupIds:
+          - !GetAtt SSHSecurityGroup.GroupId
+          - !GetAtt HTTPSecurityGroup.GroupId
+        UserData:
+          !Base64 |
+          #!/bin/bash
+          yum install -y java-1.8.0-openjdk-devel
+
+  MyASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: my-auto-scaling-group
+      VPCZoneIdentifier:
+        - subnet-fa32b2b0
+        - subnet-1c771164
+        - subnet-a1f485fc
+      LaunchTemplate:
+        LaunchTemplateId: !Ref MyLaunchTemplate
+        Version: !GetAtt MyLaunchTemplate.LatestVersionNumber
+      MinSize: "2"
+      MaxSize: "4"
+      DesiredCapacity: "2"
+      HealthCheckGracePeriod: 300
