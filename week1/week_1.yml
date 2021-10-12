@@ -58,10 +58,10 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       AutoScalingGroupName: my-auto-scaling-group
-      VPCZoneIdentifier:
-        - subnet-fa32b2b0
-        - subnet-1c771164
-        - subnet-a1f485fc
+      AvailabilityZones:
+        - us-west-2a
+        - us-west-2b
+        - us-west-2c
       LaunchTemplate:
         LaunchTemplateId: !Ref MyLaunchTemplate
         Version: !GetAtt MyLaunchTemplate.LatestVersionNumber
