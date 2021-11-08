@@ -79,7 +79,6 @@ resource "aws_instance" "ec2_public" {
   key_name = var.key_pair_name
   vpc_security_group_ids = [ aws_security_group.allow_web.id ]
   user_data = templatefile("${path.module}/files/ec2-startup.sh", {server = "public"})
-  #iam_instance_profile = aws_iam_instance_profile.s3_profile.name
   subnet_id = aws_subnet.public-subnet.id
 
   tags = {
@@ -93,7 +92,6 @@ resource "aws_instance" "ec2_private" {
   key_name = var.key_pair_name
   vpc_security_group_ids = [ aws_security_group.allow_web.id ]
   user_data = templatefile("${path.module}/files/ec2-startup.sh", {server = "private"})
-  #iam_instance_profile = aws_iam_instance_profile.s3_profile.name
   subnet_id = aws_subnet.private-subnet.id
 
   tags = {

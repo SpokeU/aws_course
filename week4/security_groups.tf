@@ -3,7 +3,6 @@ resource "aws_security_group" "private_sg" {
   vpc_id = aws_vpc.week4-vpc.id
   description = "SSH and ping only"
 
-  # Only postgres in
   ingress {
     from_port = 22
     to_port = 22
